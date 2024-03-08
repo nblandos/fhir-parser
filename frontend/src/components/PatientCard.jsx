@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
 
 const PatientCard = ({ patient }) => {
+  console.log(patient[0]);
+
   return (
     <div className="patient-card">
       <h3>{patient.name}</h3>
-      <p><strong>Birth Date:</strong> {patient.birthDate}</p>
-      <p><strong>Gender:</strong> {patient.gender}</p>
-      <p><strong>Address:</strong> {patient.address}</p>
+      <p>{patient.birthDate}</p>
     </div>
   );
-}
+};
 
 export default PatientCard;

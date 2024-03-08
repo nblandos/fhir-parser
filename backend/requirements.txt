@@ -1,2 +1,3 @@
 flask
-fhirpy
+flask_cors
+fhirclient
