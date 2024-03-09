@@ -5,6 +5,7 @@ const PatientCard = ({ patient }) => {
     <div className="patient-card">
       <h3>{patient.name}</h3>
       <p>{patient.birthDate}</p>
+      <p>{patient.gender}</p>
     </div>
   );
 };
