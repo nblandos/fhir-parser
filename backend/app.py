@@ -15,7 +15,6 @@ CORS(app)
 def process_fhir_data(fhir_data):
     patient_details = []
     condition_details = []
-    encounter_details = []
     observation_details = []
 
     bundle = b.Bundle(fhir_data)
@@ -25,15 +24,16 @@ def process_fhir_data(fhir_data):
             patient_details.append(get_patient_details(entry.resource))
         elif entry.resource.resource_type == 'Condition':
             condition_details.append(get_condition_details(entry.resource))
-        elif entry.resource.resource_type == 'Encounter':
-            encounter_details.append(get_encounter_details(entry.resource))
         elif entry.resource.resource_type == 'Observation':
             observation_details.append(get_observation_details(entry.resource))
 
-    print(patient_details)
-    print(condition_details)
+    data = {'patient': patient_details,
+            'conditions': condition_details,
+            'observations': observation_details}
 
-    return patient_details
+    print(data)
+
+    return data
 
 
 def get_condition_details(condition):
@@ -51,27 +51,25 @@ def get_condition_details(condition):
     return condition_details
 
 
-def get_encounter_details(encounter):
-    encounter_details = {}
-    if encounter.period:
-        start = encounter.period.start.isostring
-        end = encounter.period.end.isostring
-        encounter_details = {
-            'start': start,
-            'end': end
-        }
-    return encounter_details
-
-
 def get_observation_details(observation):
     observation_details = {}
+    if observation.code:
+        observation_details['observationType'] = observation.code.text
+
+    # value can be a quantity, codeableConcept or string
     if observation.valueQuantity:
         value = observation.valueQuantity.value
         unit = observation.valueQuantity.unit
-        observation_details = {
-            'value': value,
-            'unit': unit
-        }
+        formatted_value = f"{value} {unit}"
+        observation_details['value'] = formatted_value
+    elif observation.valueCodeableConcept:
+        observation_details['value'] = observation.valueCodeableConcept.text
+    elif observation.valueString:
+        observation_details['value'] = observation.valueString
+
+    if observation.effectiveDateTime:
+        date = observation.effectiveDateTime.isostring
+        observation_details['date'] = date
     return observation_details
 
 
