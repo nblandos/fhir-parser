@@ -8,15 +8,18 @@ from fhirclient.models import patient as p
 import json
 import os
 
-
 app = Flask(__name__)
 CORS(app)
 
 
 def process_fhir_data(fhir_data):
-    for entry in fhir_data['entry']:
-        if entry['resource']['resourceType'] == 'Patient':
-            patient = p.Patient(entry['resource'])
+    patient_data = {}
+
+    bundle = b.Bundle(fhir_data)
+
+    for entry in bundle.entry:
+        if entry.resource.resource_type == 'Patient':
+            patient = entry.resource
             patient_name = patient.name[0]
             given_name = ' '.join(
                 patient_name.given) if patient_name.given else ''
