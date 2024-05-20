@@ -13,5 +13,3 @@ flask run
 ```
 
 - Also create a folder called 'data' containing the FHIR json files to process
-
-Was originally testing using a simple react frontend so not integrated with new frontend yet.
