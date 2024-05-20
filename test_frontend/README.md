@@ -1,7 +1,7 @@
 # Test frontend
 
-This is a simple react frontend that was used to test the backend.
-Including it in the repo in case you want to use it to test the backend.
+Simple react frontend used to test backend
+Displays the parsed data as a list
 
 - To run it first install node modules:
 
